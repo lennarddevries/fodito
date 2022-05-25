@@ -1,0 +1,3 @@
+[submodule ".github/actions/cc_commit_message"]
+	path = .github/actions/cc_commit_message
+	url = git@github.com:lennarddevries/cc-commit-message.git

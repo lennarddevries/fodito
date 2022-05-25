@@ -1,0 +1,38 @@
+name: 'Update tag'
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+  push:
+    branches:
+      - 1-action-to-lint-merge-commit-message # change to main
+      - 'releases/*'
+
+jobs:
+  check-commit-message:
+    name: Lint merge commit message
+    runs-on: ubuntu-latest
+    outputs:
+      upgrade_type: ${{ steps.cc_commit_message.outputs.upgrade_type }}
+      commit_msg_feedback: ${{ steps.step2.outputs.commit_msg_feedback }}
+    steps:
+      - name: checkout
+        id: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Check if merge commit matches conventional commit spec
+        id: cc_commit_message
+        uses: ./.github/actions/cc_commit_message
+        with:
+          error: 'Your merge commit message does not match the conventional commit specification'
+    
